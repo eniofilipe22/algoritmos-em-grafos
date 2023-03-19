@@ -1,6 +1,6 @@
 #ifndef SIMPLE_GRAPH_LIST_H
 #define SIMPLE_GRAPH_LIST_H
-#include "../AdjacencyList/AdjacencyList.h"
+#include "AdjacencyList.h"
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -13,6 +13,7 @@ private:
 
 public:
     bool isNeighbor(unsigned v1, unsigned v2) const;
+    vector<unsigned> traverseAllNeighbors(unsigned vertice) const;
 };
 
 void SimpleGraphList::putNewEdge(CoupleVertice newEdge)
@@ -20,7 +21,7 @@ void SimpleGraphList::putNewEdge(CoupleVertice newEdge)
     if (!isNeighbor(newEdge.vertice1, newEdge.vertice2))
     {
         matrix[newEdge.vertice1].push_back(newEdge);
-        cout << "edge: v1 -> " << newEdge.vertice1 << " v2 -> " << newEdge.vertice2 << endl;
+        // cout << "edge: v1 -> " << newEdge.vertice1 << " v2 -> " << newEdge.vertice2 << endl;
         CoupleVertice inverseEdge;
         inverseEdge.weight = newEdge.weight;
         inverseEdge.vertice1 = newEdge.vertice2;
@@ -52,6 +53,16 @@ bool SimpleGraphList::isNeighbor(unsigned v1, unsigned v2) const
         }
     }
     return isNeighbor;
+};
+
+vector<unsigned> SimpleGraphList::traverseAllNeighbors(unsigned vertice) const
+{
+    vector<unsigned> allNeighbors;
+    for (CoupleVertice neighbor : matrix[vertice])
+    {
+        allNeighbors.push_back(neighbor.vertice2);
+    }
+    return allNeighbors;
 };
 
 #endif

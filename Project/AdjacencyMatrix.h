@@ -1,29 +1,36 @@
-#ifndef ADJACENCY_LIST_H
-#define ADJACENCY_LIST_H
-#include "../Graph/Graph.h"
+#ifndef ADJACENCY_MATRIX_H
+#define ADJACENCY_MATRIX_H
+#include "Graph.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cstdlib>
 using namespace std;
 
-class AdjacencyList : public Graph
+class AdjacencyMatrix : public Graph
 {
 protected:
-    vector<vector<CoupleVertice>> matrix;
+    vector<vector<int>> matrix;
 
-    void allocMatrix(unsigned numVertices);
+    virtual void allocMatrix(unsigned numVertices) = 0;
     virtual void putNewEdge(CoupleVertice newEdge) = 0;
 
     CoupleVertice sortCouple(unsigned numVertices, Weight weight);
 
 public:
+    virtual vector<unsigned> traverseAllNeighbors(unsigned vertice) const = 0;
     void createRadomGraph(unsigned numVertices, unsigned numEdges, Weight weight);
     void readFromFile(string fileName);
-    void printMatrix() const;
+    int getNumVertices() const;
+    virtual void printMatrix() const = 0;
 };
 
-CoupleVertice AdjacencyList::sortCouple(unsigned numVertices, Weight weight)
+int AdjacencyMatrix::getNumVertices() const
+{
+    return matrix.size();
+}
+
+CoupleVertice AdjacencyMatrix::sortCouple(unsigned numVertices, Weight weight)
 {
     CoupleVertice newCouple;
 
@@ -34,7 +41,7 @@ CoupleVertice AdjacencyList::sortCouple(unsigned numVertices, Weight weight)
     return newCouple;
 };
 
-void AdjacencyList::createRadomGraph(unsigned numVertices, unsigned numEdges, Weight weight)
+void AdjacencyMatrix::createRadomGraph(unsigned numVertices, unsigned numEdges, Weight weight)
 {
     allocMatrix(numVertices);
     for (int eachEdge = 0; eachEdge < numEdges; eachEdge++)
@@ -44,7 +51,7 @@ void AdjacencyList::createRadomGraph(unsigned numVertices, unsigned numEdges, We
     }
 };
 
-void AdjacencyList::readFromFile(string fileName)
+void AdjacencyMatrix::readFromFile(string fileName)
 {
     fstream fileToRead;
     fileToRead.open(fileName, ios::in);
@@ -59,7 +66,7 @@ void AdjacencyList::readFromFile(string fileName)
         Weight defaultWeight;
 
         // numero de vertices
-        fileToRead.getline(linha, 2, '\n');
+        fileToRead.getline(linha, 3, '\n');
         numVertices = atoi(linha);
 
         allocMatrix(numVertices);
@@ -92,22 +99,4 @@ void AdjacencyList::readFromFile(string fileName)
     }
 };
 
-void AdjacencyList::allocMatrix(unsigned numVertices)
-{
-    matrix.resize(numVertices);
-};
-
-void AdjacencyList::printMatrix() const
-{
-    for (int numLine = 0; numLine < matrix.size(); numLine++)
-    {
-        cout << "linha " << numLine << " : ";
-
-        for (CoupleVertice edge : matrix[numLine])
-        {
-            cout << edge.vertice1 << " -> " << edge.vertice2 << ", Peso: " << edge.weight << " || ";
-        }
-        cout << endl;
-    }
-};
 #endif

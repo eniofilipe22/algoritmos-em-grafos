@@ -1,6 +1,6 @@
 #ifndef SIMPLE_GRAPH_MATRIX_H
 #define SIMPLE_GRAPH_MATRIX_H
-#include "../AdjacencyMatrix/AdjacencyMatrix.h"
+#include "AdjacencyMatrix.h"
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -15,6 +15,7 @@ private:
 public:
     bool isNeighbor(unsigned v1, unsigned v2) const;
     void printMatrix() const;
+    vector<unsigned> traverseAllNeighbors(unsigned vertice) const;
     // void readFromFile(string fileName);
 };
 
@@ -35,12 +36,12 @@ void SimpleGraphMatrix::putNewEdge(CoupleVertice newEdge)
         if (newEdge.vertice1 > newEdge.vertice2)
         {
             matrix[newEdge.vertice1][newEdge.vertice2] = newEdge.weight;
-            cout << "edge: v1 -> " << newEdge.vertice1 << " v2 -> " << newEdge.vertice2 << endl;
+            // cout << "edge: v1 -> " << newEdge.vertice1 << " v2 -> " << newEdge.vertice2 << endl;
         }
         if (newEdge.vertice2 > newEdge.vertice1)
         {
             matrix[newEdge.vertice2][newEdge.vertice1] = newEdge.weight;
-            cout << "edge: v1 -> " << newEdge.vertice2 << " v2 -> " << newEdge.vertice1 << endl;
+            // cout << "edge: v1 -> " << newEdge.vertice2 << " v2 -> " << newEdge.vertice1 << endl;
         }
     }
 };
@@ -60,7 +61,7 @@ bool SimpleGraphMatrix::isNeighbor(unsigned v1, unsigned v2) const
 
 void SimpleGraphMatrix::printMatrix() const
 {
-    for (int numLine = 0; numLine < matrix.size(); numLine++)
+    for (int numLine = 0; numLine < getNumVertices(); numLine++)
     {
         cout << "linha " << numLine << " : ";
         int stopped = 0;
@@ -69,7 +70,7 @@ void SimpleGraphMatrix::printMatrix() const
             stopped = numCollum + 1;
             cout << matrix[numLine][numCollum] << " ";
         }
-        for (int numCollum = stopped; numCollum < matrix.size(); numCollum++)
+        for (int numCollum = stopped; numCollum < getNumVertices(); numCollum++)
         {
             if (numLine == numCollum)
             {
@@ -82,6 +83,26 @@ void SimpleGraphMatrix::printMatrix() const
         }
         cout << endl;
     }
+};
+
+vector<unsigned> SimpleGraphMatrix::traverseAllNeighbors(unsigned vertice) const
+{
+    vector<unsigned> allNeighbors;
+    for (unsigned lineVerification = 0; lineVerification < vertice; lineVerification++)
+    {
+        if (matrix[vertice][lineVerification] > 0)
+        {
+            allNeighbors.push_back(lineVerification);
+        }
+    }
+    for (unsigned collumnVerification = vertice + 1; collumnVerification < getNumVertices(); collumnVerification++)
+    {
+        if (matrix[collumnVerification][vertice] > 0)
+        {
+            allNeighbors.push_back(collumnVerification);
+        }
+    }
+    return allNeighbors;
 };
 
 #endif

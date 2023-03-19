@@ -1,6 +1,6 @@
 #ifndef DIGRAPH_MATRIX_H
 #define DIGRAPH_MATRIX_H
-#include "../AdjacencyMatrix/AdjacencyMatrix.h"
+#include "AdjacencyMatrix.h"
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -14,6 +14,7 @@ private:
 
 public:
     bool isNeighbor(unsigned v1, unsigned v2) const;
+    vector<unsigned> traverseAllNeighbors(unsigned vertice) const;
     void printMatrix() const;
 };
 
@@ -32,7 +33,7 @@ void DigraphMatrix::putNewEdge(CoupleVertice newEdge)
     if (!isNeighbor(newEdge.vertice1, newEdge.vertice2))
     {
         matrix[newEdge.vertice1][newEdge.vertice2] = newEdge.weight;
-        cout << "edge: v1 -> " << newEdge.vertice1 << " v2 -> " << newEdge.vertice2 << endl;
+        // cout << "edge: v1 -> " << newEdge.vertice1 << " v2 -> " << newEdge.vertice2 << endl;
     }
 };
 
@@ -43,7 +44,7 @@ bool DigraphMatrix::isNeighbor(unsigned v1, unsigned v2) const
 
 void DigraphMatrix::printMatrix() const
 {
-    for (int numVertices = 0; numVertices < matrix.size(); numVertices++)
+    for (int numVertices = 0; numVertices < getNumVertices(); numVertices++)
     {
         cout << "linha " << numVertices << " : ";
         for (int numNeighbor = 0; numNeighbor < matrix[numVertices].size(); numNeighbor++)
@@ -52,6 +53,19 @@ void DigraphMatrix::printMatrix() const
         }
         cout << endl;
     }
+};
+
+vector<unsigned> DigraphMatrix::traverseAllNeighbors(unsigned vertice) const
+{
+    vector<unsigned> allNeighbors;
+    for (unsigned lineVerification = 0; lineVerification < getNumVertices(); lineVerification++)
+    {
+        if (matrix[vertice][lineVerification] > 0)
+        {
+            allNeighbors.push_back(lineVerification);
+        }
+    }
+    return allNeighbors;
 };
 
 #endif
