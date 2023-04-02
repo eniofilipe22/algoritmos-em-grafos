@@ -3,8 +3,10 @@
 #include "Graph.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <cstdlib>
+#include <queue>
 using namespace std;
 
 class AdjacencyList : public Graph
@@ -20,7 +22,7 @@ protected:
 public:
     void createRadomGraph(unsigned numVertices, unsigned numEdges, Weight weight);
     virtual vector<unsigned> traverseAllNeighbors(unsigned vertice) const = 0;
-    void readFromFile(string fileName);
+    void readFromFile(string fileName, int numVertices, int numEdges, bool putDefaultWheight);
     int getNumVertices() const;
     void printMatrix() const;
 };
@@ -51,7 +53,7 @@ void AdjacencyList::createRadomGraph(unsigned numVertices, unsigned numEdges, We
     }
 };
 
-void AdjacencyList::readFromFile(string fileName)
+void AdjacencyList::readFromFile(string fileName, int numVertices, int numEdges, bool putDefaultWheight)
 {
     fstream fileToRead;
     fileToRead.open(fileName, ios::in);
@@ -62,12 +64,30 @@ void AdjacencyList::readFromFile(string fileName)
     else
     {
         char linha[100];
-        int numVertices = 0;
+
+        bool thereIsWheight = !putDefaultWheight;
         Weight defaultWeight;
+        queue<int> wheights;
 
         // numero de vertices
-        fileToRead.getline(linha, 3, '\n');
-        numVertices = atoi(linha);
+        if (thereIsWheight)
+        {
+            for (int i = 0; i < numEdges; i++)
+            {
+                if (i == (numEdges - 1))
+                {
+                    fileToRead.getline(linha, 4, '\n');
+                    int wheight = atoi(linha);
+                    wheights.push(wheight);
+                }
+                else
+                {
+                    fileToRead.getline(linha, 3, ' ');
+                    int wheight = atoi(linha);
+                    wheights.push(wheight);
+                }
+            }
+        }
 
         allocMatrix(numVertices);
 
@@ -79,11 +99,11 @@ void AdjacencyList::readFromFile(string fileName)
                 int value;
                 if (collumn == numVertices - 1)
                 {
-                    fileToRead.getline(linha, 2, '\n');
+                    fileToRead.getline(linha, 3, '\n');
                 }
                 else
                 {
-                    fileToRead.getline(linha, 2, ' ');
+                    fileToRead.getline(linha, 3, ' ');
                 }
 
                 value = atoi(linha);
@@ -91,7 +111,16 @@ void AdjacencyList::readFromFile(string fileName)
                 {
                     newCouple.vertice1 = line;
                     newCouple.vertice2 = collumn;
-                    newCouple.weight = value;
+                    if (thereIsWheight)
+                    {
+                        newCouple.weight = wheights.front();
+                        wheights.pop();
+                    }
+                    else
+                    {
+                        newCouple.weight = value;
+                    }
+
                     putNewEdge(newCouple);
                 }
             }

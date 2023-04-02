@@ -32,7 +32,7 @@ class CoupleVertice
 public:
     unsigned vertice1;
     unsigned vertice2;
-    unsigned weight;
+    int weight;
 };
 
 class Graph
@@ -46,7 +46,7 @@ private:
 public:
     virtual void createRadomGraph(unsigned numVertices, unsigned numEdges, Weight weight) = 0;
     virtual bool isNeighbor(unsigned v1, unsigned v2) const = 0;
-    virtual void readFromFile(string fileName) = 0;
+    virtual void readFromFile(string fileName, int numVertices, int numEdges, bool putDefaultWheight) = 0;
     virtual vector<unsigned> traverseAllNeighbors(unsigned vertice) const = 0;
     virtual int getNumVertices() const = 0;
     int randomInteger(int min, int max);
