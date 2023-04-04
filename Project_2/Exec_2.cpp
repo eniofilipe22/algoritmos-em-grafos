@@ -1,6 +1,4 @@
-#include "SimpleGraphMatrix.h"
-#include "DigraphMatrix.h"
-#include "SimpleGraphList.h"
+
 #include "DigraphList.h"
 #include <vector>
 #include <iostream>
@@ -43,20 +41,20 @@ void randomVertices()
     for (int n = 1; n <= 1000; n++)
     {
 
-        SimpleGraphList simpleAdjacencyList;
+        DigraphList digraphList;
         double maxEdges = ((n * (n - 1) / 2));
         int numEdges = round(maxEdges * 0.2);
 
-        simpleAdjacencyList.createRadomGraph(n, numEdges, defaultWeight);
-        simpleAdjacencyList.BFS(0);
-        simpleAdjacencyList.DFS(0);
+        digraphList.createRadomGraph(n, numEdges, defaultWeight);
+        simple
 
-        fileListOut << n << ","
-                    << numEdges << ","
-                    << simpleAdjacencyList.getBFSInfo().elapsed_time << ","
-                    << simpleAdjacencyList.getBFSInfo().num_vertices_reached << ","
-                    << simpleAdjacencyList.getDFSInfo().elapsed_time << ","
-                    << simpleAdjacencyList.getDFSInfo().num_vertices_reached << ",\n";
+                fileListOut
+            << n << ","
+            << numEdges << ","
+            << simpleAdjacencyList.getBFSInfo().elapsed_time << ","
+            << simpleAdjacencyList.getBFSInfo().num_vertices_reached << ","
+            << simpleAdjacencyList.getDFSInfo().elapsed_time << ","
+            << simpleAdjacencyList.getDFSInfo().num_vertices_reached << ",\n";
 
         cout << "Random Vertice - lista - " << n << "/1000" << endl;
     };
