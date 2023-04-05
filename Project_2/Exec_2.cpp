@@ -15,17 +15,17 @@ void randomVertices();
 int main()
 {
 
-    // DigraphList digrapghAdjacencyList;
-    // digrapghAdjacencyList.readFromFile("digrafoBF.txt", 12, 15, false);
-    // digrapghAdjacencyList.printMatrix();
+    DigraphList digrapghAdjacencyList;
+    digrapghAdjacencyList.readFromFile("digrafoBF.txt", 12, 15, false);
+    digrapghAdjacencyList.printMatrix();
 
-    // cout << endl
-    //      << "BellmanFord" << endl;
+    cout << endl
+         << "BellmanFord" << endl;
 
-    // digrapghAdjacencyList.bellmanFord(0, true, true);
-    // digrapghAdjacencyList.bellmanFord(3, false, true);
+    digrapghAdjacencyList.bellmanFord(0, true, true);
+    digrapghAdjacencyList.bellmanFord(3, false, true);
 
-    randomVertices();
+    // randomVertices();
 
     return 0;
 }
