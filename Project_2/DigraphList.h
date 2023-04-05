@@ -13,6 +13,7 @@ struct BellmanFordInfo
 {
     vector<int> distance;
     vector<int> pi;
+    double elapsed_time;
 };
 
 class DigraphList : public AdjacencyList
@@ -27,10 +28,16 @@ public:
     bool bellmanFord(unsigned initialVertice, bool printInfo, bool printTimeExecution);
     void initializeUniqueSource(unsigned initialVertice);
     void stretching(CoupleVertice coupleVertice);
+    BellmanFordInfo getBellmanFordInfo();
     void printDistance();
     void printDistanceHeader();
     void printPi();
 };
+
+BellmanFordInfo DigraphList::getBellmanFordInfo()
+{
+    return this->bellmanFordInfo;
+}
 
 void DigraphList::putNewEdge(CoupleVertice newEdge)
 {
@@ -102,6 +109,7 @@ bool DigraphList::bellmanFord(unsigned initialVertice, bool printInfo, bool prin
     // testando ciclo
     end = chrono::system_clock::now();
     chrono::duration<double> elapsed_seconds = end - start;
+    bellmanFordInfo.elapsed_time = elapsed_seconds.count();
 
     if (printTimeExecution)
     {

@@ -15,15 +15,17 @@ void randomVertices();
 int main()
 {
 
-    DigraphList digrapghAdjacencyList;
-    digrapghAdjacencyList.readFromFile("digrafoBF.txt", 12, 15, false);
-    digrapghAdjacencyList.printMatrix();
+    // DigraphList digrapghAdjacencyList;
+    // digrapghAdjacencyList.readFromFile("digrafoBF.txt", 12, 15, false);
+    // digrapghAdjacencyList.printMatrix();
 
-    cout << endl
-         << "BellmanFord" << endl;
+    // cout << endl
+    //      << "BellmanFord" << endl;
 
-    digrapghAdjacencyList.bellmanFord(0, true, true);
+    // digrapghAdjacencyList.bellmanFord(0, true, true);
     // digrapghAdjacencyList.bellmanFord(3, false, true);
+
+    randomVertices();
 
     return 0;
 }
@@ -37,7 +39,7 @@ void randomVertices()
     fstream fileListOut;
     fileListOut.open("digraphList.csv", ios::out);
 
-    fileListOut << "num_vertices,num_arestas,execution_BFS,reached_vertices_BFS,execution_DFS,reached_vertices_DFS,\n";
+    fileListOut << "num_vertices,num_arestas,execution_time,\n";
     for (int n = 1; n <= 1000; n++)
     {
 
@@ -46,15 +48,12 @@ void randomVertices()
         int numEdges = round(maxEdges * 0.2);
 
         digraphList.createRadomGraph(n, numEdges, defaultWeight);
-        simple
+        digraphList.bellmanFord(0, false, false);
 
-                fileListOut
+        fileListOut
             << n << ","
             << numEdges << ","
-            << simpleAdjacencyList.getBFSInfo().elapsed_time << ","
-            << simpleAdjacencyList.getBFSInfo().num_vertices_reached << ","
-            << simpleAdjacencyList.getDFSInfo().elapsed_time << ","
-            << simpleAdjacencyList.getDFSInfo().num_vertices_reached << ",\n";
+            << digraphList.getBellmanFordInfo().elapsed_time << ",\n";
 
         cout << "Random Vertice - lista - " << n << "/1000" << endl;
     };
